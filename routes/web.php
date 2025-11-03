@@ -11,3 +11,6 @@ Route::get("/signup", function () {
 Route::get("/login", function () {
     return inertia('auth/login');
 });
+Route::get("/dashboard", function () {
+    return inertia('dashboard');
+});
