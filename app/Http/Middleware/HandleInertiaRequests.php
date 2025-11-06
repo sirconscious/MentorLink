@@ -44,7 +44,10 @@ class HandleInertiaRequests extends Middleware
                 : null, 
             'auth.roles' => fn() => $request->user()
                 ? $request->user()->roles->pluck('name')
-                : null,
+                : null, 
+            'auth.hasInfo' => fn() => $request->user()
+                ? $request->user()->hasInfo()
+                : false,
         ]);
     }
 }

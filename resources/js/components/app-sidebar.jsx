@@ -1,4 +1,6 @@
-import * as React from "react"
+import * as React from "react" 
+import { usePage } from "@inertiajs/react" 
+import {useForm} from "@inertiajs/react" 
 import {
   IconCamera,
   IconChartBar,
@@ -30,12 +32,11 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
-
 const data = {
   user: {
     name: "shadcn",
     email: "m@example.com",
-    avatar: "/avatars/shadcn.jpg",
+    avatar: "/images/user.svg",
   },
   navMain: [
     {
@@ -149,8 +150,10 @@ const data = {
 }
 
 export function AppSidebar({
-  ...props
-}) {
+  ...props 
+}) {   
+  const user = {...usePage().props.auth.user , avatar: "/images/user.svg"}; 
+  const roles = usePage().props.auth.roles;
   return (
     <Sidebar collapsible="offcanvas" {...props}>
       <SidebarHeader>
@@ -171,7 +174,7 @@ export function AppSidebar({
         <NavSecondary items={data.navSecondary} className="mt-auto" />
       </SidebarContent>
       <SidebarFooter>
-        <NavUser user={data.user} />
+        <NavUser user={user} />
       </SidebarFooter>
     </Sidebar>
   );

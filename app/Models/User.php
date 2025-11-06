@@ -15,7 +15,19 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Roles::class , "role_user");
     } 
-    
+    public function info(){
+        return $this->hasOne(Info::class , "user_id");
+    }
+    public function hasInfo(): bool
+    {
+        // If relationship is already loaded, check the object
+        if ($this->relationLoaded('info')) {
+            return !is_null($this->info);
+        }
+
+        // Otherwise, perform a query check
+        return $this->info()->exists();
+    }
     /** 
      * The attributes that are mass assignable.
      *

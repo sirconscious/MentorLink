@@ -1,7 +1,7 @@
 import BubbleMenu from "@/components/BubbleMenu" 
 import { gsap } from "gsap";
 import { useEffect, useRef } from "react";
-
+import { router } from "@inertiajs/react";
 export default function home() { 
   const heroRef = useRef(null);
 
@@ -87,6 +87,7 @@ export default function home() {
             </p>
             <button 
               className="bg-purple-400 hover:bg-purple-500 text-white font-bold text-lg px-8 py-4 rounded-full transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
+              onClick={()=>router.get("/login")}
             >
               Get Started
             </button>

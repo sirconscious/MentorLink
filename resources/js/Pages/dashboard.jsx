@@ -2,7 +2,9 @@ import { AppSidebar } from "@/components/app-sidebar"
 import { ChartAreaInteractive } from "@/components/chart-area-interactive"
 import { DataTable } from "@/components/data-table"
 import { SectionCards } from "@/components/section-cards"
-import { SiteHeader } from "@/components/site-header"
+import { SiteHeader } from "@/components/site-header" 
+import { usePage } from "@inertiajs/react" 
+import FlashMessage from "@/components/FlashMessage" // Your existing component
 import {
   SidebarInset,
   SidebarProvider,
@@ -10,7 +12,10 @@ import {
 
 import data from "./data.json"
 
-export default function Page() {
+export default function Page() { 
+   const { flash } = usePage().props;
+   console.log(usePage().props); 
+
   return (
     <SidebarProvider
       style={
@@ -19,6 +24,9 @@ export default function Page() {
           "--header-height": "calc(var(--spacing) * 12)"
         }
       }>
+      {/* Your existing FlashMessage component - it will float above everything */}
+      <FlashMessage />
+      
       <AppSidebar variant="inset" />
       <SidebarInset>
         <SiteHeader />

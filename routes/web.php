@@ -1,6 +1,8 @@
 <?php
 
+use App\Http\Controllers\authController;
 use App\Models\User;
+use App\Models\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Route;
@@ -33,7 +35,7 @@ Route::get("/auth/google/redirect", function () {
 
 Route::get("/auth/github/redirect", function () {
     return Socialite::driver('github')->stateless()->redirect();
-});
+})->name("github.redirect");
 Route::get("/auth/github/callback", function (Request $request) {
     $githubUser = Socialite::driver('github')->stateless()->user();
     // Get detailed user info
@@ -79,4 +81,12 @@ Route::get("/auth/github/callback", function (Request $request) {
     } 
     auth()->login($user);
     return redirect()->route("dashboard");
-});
+})->name("github.callback"); 
+
+Route::post("/logout" , [authController::class , "logout"])->name("logout"); ; 
+
+Route::get("/complete-info", function () {
+    return inertia('CompleteInfo');
+})->middleware(['auth'])->name('complete.info'); 
+
+Route::post("/complete-info" , [UserController::class , "completeInfo"])->name("complete-info");
