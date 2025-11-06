@@ -26,4 +26,12 @@ Route::get("/auth/google/callback", function (Request $request) {
 
 Route::get("/auth/google/redirect", function () {
     return Socialite::driver('google')->stateless()->redirect();
+}); 
+
+Route::get("/auth/github/redirect", function () {
+    return Socialite::driver('github')->stateless()->redirect();
+}); 
+Route::get("/auth/github/callback", function (Request $request) {
+    $user = Socialite::driver('github')->stateless()->user();
+    dd($user);
 });
