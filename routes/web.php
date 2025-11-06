@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\authController as ControllersAuthController;
+use App\Http\Controllers\MentorController;
 use App\Http\Controllers\UserController;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -39,3 +40,4 @@ Route::get("/complete-info", function () {
 })->middleware(['auth'])->name('complete.info'); 
 
 Route::post("/complete-info" , [UserController::class , "completeInfo"])->name("complete-info");
+Route::get('/mentor/{id}', [MentorController::class, 'show']);

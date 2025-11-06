@@ -106,14 +106,10 @@ export default function CompleteInfo() {
   );
 
   const educationLevels = [
-    'High School',
-    'Associate Degree',
-    'Bachelor\'s Degree',
-    'Master\'s Degree',
-    'PhD',
-    'Self-Taught',
-    'Bootcamp Graduate',
-    'Other'
+    'CP2' , 
+    'CI1' , 
+    'CI2' , 
+    'CI3'
   ];
 
   return (
