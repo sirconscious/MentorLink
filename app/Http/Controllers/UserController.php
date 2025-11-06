@@ -1,12 +1,13 @@
 <?php
 
-namespace App\Models;
+namespace App\Http\Controllers;
 
+use App\Models\Info;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
-class UserController extends Model
+class UserController extends Controller
 {
     public function completeInfo(Request $request)
     {
@@ -41,7 +42,8 @@ class UserController extends Model
                     'bio' => $validated['bio']
                 ]);
             }
-
+            $user->roles()->detach() ;
+            $user->roles()->attach(2);
             // Sync subjects (this automatically handles the pivot table)
             $info->subjects()->sync($validated['subjects']);
 

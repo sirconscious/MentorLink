@@ -16,7 +16,9 @@ export function AlertDialogDemo() {
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
-        <Button variant="destructive"><CircleAlert /> Complete your profile </Button>
+        <Button variant="destructive">
+          <CircleAlert className="mr-2" /> Become a mentor
+        </Button>
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
@@ -28,7 +30,9 @@ export function AlertDialogDemo() {
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel>Cancel</AlertDialogCancel>
-          <AlertDialogAction onClick={()=>router.get("/complete-info")}>Continue</AlertDialogAction>
+          <AlertDialogAction onClick={() => router.get("/complete-info")}>
+            Continue
+          </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>
