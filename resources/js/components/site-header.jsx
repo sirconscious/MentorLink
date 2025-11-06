@@ -4,7 +4,8 @@ import { SidebarTrigger } from "@/components/ui/sidebar"
 import { usePage } from "@inertiajs/react"; 
 import { CircleAlert } from "lucide-react";  
 import { AlertDialogDemo } from "./AlertDialogDemo"; 
-import ThemeToggle from "./ThemeToggle";
+import ThemeToggle from "./ThemeToggle"; 
+import ThemeSwitcher from "./ThemeSwitcher";
 export function SiteHeader() { 
   const roles= usePage().props.auth.roles; 
   const hasInfo = usePage().props.auth.hasInfo;
@@ -33,7 +34,8 @@ export function SiteHeader() {
          <nav className="flex items-center space-x-2">
             <ThemeToggle />
             {/* Your existing user menu or other buttons */}
-          </nav>
+          </nav> 
+                      <ThemeSwitcher />
       </div>
     </header>
   );

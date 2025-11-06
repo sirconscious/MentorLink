@@ -40,4 +40,5 @@ Route::get("/complete-info", function () {
 })->middleware(['auth'])->name('complete.info'); 
 
 Route::post("/complete-info" , [UserController::class , "completeInfo"])->name("complete-info");
-Route::get('/mentor/{id}', [MentorController::class, 'show']);
+Route::get('/mentors/{id}', [MentorController::class, 'show']);
+Route::get('/mentors', [MentorController::class, 'index'])->name('mentors.index');
