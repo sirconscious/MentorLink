@@ -1,5 +1,5 @@
 import { Head, Link } from '@inertiajs/react';
-import { ArrowLeft, Star, BookOpen, Award, Mail, Clock } from 'lucide-react';
+import { ArrowLeft, Star, BookOpen, Award, Mail, Clock, User } from 'lucide-react';
 import DashboardLayout from '../Layouts/DashboardLayout';
 import { Pie, PieChart, Cell, ResponsiveContainer } from 'recharts';
 import { router } from '@inertiajs/react';
@@ -15,7 +15,28 @@ export default function MentorShow({ mentor }) {
     const handleDemande = (id) => {
         router.get(`/mentors/${id}/demande`);
     };
-    console.log(mentor)
+
+    // Utiliser les vraies données des avis
+    const reviews = mentor.received_ratings || [];
+
+    const getProblemResolvedText = (status) => {
+        switch (status) {
+            case 'oui': return 'Problème résolu';
+            case 'partiellement': return 'Partiellement résolu';
+            case 'non': return 'Non résolu';
+            default: return status;
+        }
+    };
+
+    const getProblemResolvedColor = (status) => {
+        switch (status) {
+            case 'oui': return 'text-green-600 bg-green-100';
+            case 'partiellement': return 'text-yellow-600 bg-yellow-100';
+            case 'non': return 'text-red-600 bg-red-100';
+            default: return 'text-gray-600 bg-gray-100';
+        }
+    };
+
     return (
         <>
             <Head title={`Mentor - ${mentor.name}`} />
@@ -29,7 +50,7 @@ export default function MentorShow({ mentor }) {
                                 className="inline-flex items-center gap-2 text-muted-foreground hover:text-foreground mb-4 transition-colors"
                             >
                                 <ArrowLeft className="w-4 h-4" />
-                                Retour aux mentors 
+                                Retour aux mentors
                             </Link>
 
                             <div className="flex items-center gap-4">
@@ -38,7 +59,7 @@ export default function MentorShow({ mentor }) {
                                         {mentor.name.charAt(0).toUpperCase()}
                                     </span>
                                 </div>
-                                
+
                                 <div>
                                     <h1 className="text-2xl font-bold text-foreground">
                                         {mentor.name}
@@ -77,7 +98,7 @@ export default function MentorShow({ mentor }) {
                                         <BookOpen className="w-5 h-5" />
                                         Modules enseignés
                                     </h2>
-                                    
+
                                     <div className="flex flex-col lg:flex-row items-center gap-6">
                                         {/* Simple Pie Chart */}
                                         <div className="h-48 w-48">
@@ -103,7 +124,7 @@ export default function MentorShow({ mentor }) {
                                         <div className="space-y-2">
                                             {mentor.subjects.map((subject, index) => (
                                                 <div key={subject.id} className="flex items-center gap-3">
-                                                    <div 
+                                                    <div
                                                         className="w-3 h-3 rounded-full"
                                                         style={{ backgroundColor: subjectData[index].color }}
                                                     />
@@ -112,6 +133,68 @@ export default function MentorShow({ mentor }) {
                                             ))}
                                         </div>
                                     </div>
+                                </div>
+
+                                {/* Reviews Section */}
+                                <div className="bg-card rounded-lg border border-border p-6">
+                                    <h2 className="text-xl font-semibold text-foreground mb-6 flex items-center gap-2">
+                                        <Star className="w-5 h-5 text-yellow-500" />
+                                        Avis des étudiants ({reviews.length})
+                                    </h2>
+
+                                    {reviews.length === 0 ? (
+                                        <p className="text-muted-foreground text-center py-8">
+                                            Aucun avis pour le moment.
+                                        </p>
+                                    ) : (
+                                        <div className="space-y-6">
+                                            {reviews.map((review) => (
+                                                <div key={review.id} className="border-b border-border pb-6 last:border-0 last:pb-0">
+                                                    <div className="flex items-start justify-between mb-3">
+                                                        <div className="flex items-center gap-3">
+                                                            <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
+                                                                <User className="w-4 h-4 text-primary" />
+                                                            </div>
+                                                            <div>
+                                                                <h4 className="font-medium text-foreground">
+                                                                    {review.user_name}
+                                                                </h4>
+                                                                <div className="flex items-center gap-2 mt-1">
+                                                                    <div className="flex gap-1">
+                                                                        {[1, 2, 3, 4, 5].map((star) => (
+                                                                            <Star
+                                                                                key={star}
+                                                                                className={`w-4 h-4 ${star <= review.note
+                                                                                    ? 'text-yellow-500 fill-yellow-500'
+                                                                                    : 'text-gray-300'
+                                                                                    }`}
+                                                                            />
+                                                                        ))}
+                                                                    </div>
+                                                                    <span className="text-sm text-muted-foreground">
+                                                                        {review.note}/5
+                                                                    </span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <span className="text-sm text-muted-foreground">
+                                                            {new Date(review.created_at).toLocaleDateString('fr-FR')}
+                                                        </span>
+                                                    </div>
+
+                                                    {review.comment && (
+                                                        <p className="text-foreground mb-3">
+                                                            {review.comment}
+                                                        </p>
+                                                    )}
+
+                                                    <div className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${getProblemResolvedColor(review.problem_resolved)}`}>
+                                                        {getProblemResolvedText(review.problem_resolved)}
+                                                    </div>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    )}
                                 </div>
                             </div>
 
@@ -122,7 +205,7 @@ export default function MentorShow({ mentor }) {
                                     <h3 className="text-lg font-semibold text-foreground mb-4">
                                         Contacter
                                     </h3>
-                                    
+
                                     <div className="space-y-3 mb-6">
                                         <div className="flex items-center gap-3 text-sm text-muted-foreground">
                                             <Mail className="w-4 h-4" />
@@ -134,8 +217,8 @@ export default function MentorShow({ mentor }) {
                                         </div>
                                     </div>
 
-                                    <button 
-                                        onClick={() => handleDemande(mentor.id)} 
+                                    <button
+                                        onClick={() => handleDemande(mentor.id)}
                                         className="w-full px-4 py-3 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors font-medium"
                                     >
                                         Demander une session

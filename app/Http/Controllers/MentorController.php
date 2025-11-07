@@ -17,7 +17,7 @@ class MentorController extends Controller
             ->whereHas('info')
             ->with(['info.subjects', 'demandesRecues' => function ($query) {
                 $query->where('status', 'accepted');
-            }]);
+            }, 'receivedRatings']);
 
         // Filter by subject if provided
         if ($request->has('subject') && $request->subject) {
@@ -36,6 +36,7 @@ class MentorController extends Controller
         // Get mentors with their real stats
         $mentors = $query->get()->map(function ($mentor) {
             $total_sessions = $mentor->demandesRecues->count();
+            $average_rating = $mentor->receivedRatings->avg('note') ?? 0;
 
             return [
                 'id' => $mentor->id,
@@ -44,7 +45,7 @@ class MentorController extends Controller
                 'niveau_etude' => $mentor->info->niveau_etude ?? '',
                 'bio' => $mentor->info->bio ?? '',
                 'subjects' => $mentor->info->subjects ?? [],
-                'average_rating' => 0,
+                'average_rating' => round($average_rating, 1),
                 'total_sessions' => $total_sessions,
                 'points' => $mentor->points ?? 0,
             ];
@@ -68,12 +69,17 @@ class MentorController extends Controller
         $mentor = User::whereHas('roles', function ($q) {
             $q->where('name', 'mentor');
         })
-            ->with(['info.subjects', 'demandesRecues' => function ($query) {
-                $query->where('status', 'accepted');
-            }])
+            ->with([
+                'info.subjects',
+                'demandesRecues' => function ($query) {
+                    $query->where('status', 'accepted');
+                },
+                'receivedRatings.user' // Charger aussi les infos des utilisateurs qui ont noté
+            ])
             ->findOrFail($id);
 
         $total_sessions = $mentor->demandesRecues->count();
+        $average_rating = $mentor->receivedRatings->avg('note') ?? 0;
 
         return inertia('Mentors/Show', [
             'mentor' => [
@@ -83,9 +89,19 @@ class MentorController extends Controller
                 'niveau_etude' => $mentor->info->niveau_etude ?? '',
                 'bio' => $mentor->info->bio ?? '',
                 'subjects' => $mentor->info->subjects ?? [],
-                'average_rating' => 0,
+                'average_rating' => round($average_rating, 1),
                 'total_sessions' => $total_sessions,
                 'points' => $mentor->points ?? 0,
+                'received_ratings' => $mentor->receivedRatings->map(function ($rating) {
+                    return [
+                        'id' => $rating->id,
+                        'note' => $rating->note,
+                        'comment' => $rating->comment,
+                        'problem_resolved' => $rating->problem_resolved,
+                        'created_at' => $rating->created_at,
+                        'user_name' => $rating->user->name, // Nom de l'utilisateur qui a noté
+                    ];
+                })
             ]
         ]);
     }

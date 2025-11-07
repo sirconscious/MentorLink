@@ -50,6 +50,17 @@ class User extends Authenticatable
     {
         return $this->hasMany(Demande::class, 'mentor_id');
     }
+
+    public function givenRatings()
+    {
+        return $this->hasMany(Rate::class, 'user_id');
+    }
+
+    // Notes reçues par cet utilisateur (en tant que mentor)
+    public function receivedRatings()
+    {
+        return $this->hasMany(Rate::class, 'mentor_id');
+    }
     /**
      * The attributes that should be hidden for serialization.
      *
@@ -71,5 +82,5 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
-    }
+    }  
 }

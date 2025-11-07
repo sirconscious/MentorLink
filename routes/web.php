@@ -5,6 +5,7 @@ use App\Http\Controllers\authController as ControllersAuthController;
 use App\Http\Controllers\MentorController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\DemandeController;
+use App\Http\Controllers\RatingController;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -69,4 +70,5 @@ Route::get("/rate/{id}" , function(Request $request , $id){
     return inertia("Demandes/RateSession", [
         "id" => $id
     ]);
-});
+})->middleware(["auth"]);
+Route::post('/ratings', [RatingController::class, 'store'])->name('ratings.store');
