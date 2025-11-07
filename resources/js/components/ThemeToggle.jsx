@@ -48,22 +48,22 @@ export default function ThemeToggle() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" size="icon" className="h-9 w-9">
+        <Button  variant="ghost" size="icon" className="h-9 dark:text-white w-9">
           {getCurrentIcon()}
           <span className="sr-only">Toggle theme</span>
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
         <DropdownMenuItem onClick={() => handleThemeChange('light')}>
-          <Sun className="mr-2 h-4 w-4" />
+          <Sun className="mr-2 dark:text-white h-4 w-4" />
           <span>Light</span>
         </DropdownMenuItem>
         <DropdownMenuItem onClick={() => handleThemeChange('dark')}>
-          <Moon className="mr-2 h-4 w-4" />
+          <Moon className="mr-2 dark:text-white h-4 w-4" />
           <span>Dark</span>
         </DropdownMenuItem>
         <DropdownMenuItem onClick={() => handleThemeChange('system')}>
-          <Monitor className="mr-2 h-4 w-4" />
+          <Monitor className="mr-2 dark:text-white h-4 w-4" />
           <span>System</span>
         </DropdownMenuItem>
       </DropdownMenuContent>

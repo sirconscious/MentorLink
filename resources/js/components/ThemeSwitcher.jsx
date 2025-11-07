@@ -43,7 +43,7 @@ export default function ThemeSwitcher() {
         <Button
           variant="ghost"
           size="sm"
-          className="h-9 gap-2 px-2"
+          className="h-9 dark:text-white gap-2 px-2"
         >
           <Palette className="h-4 w-4" />
           <span className="hidden sm:inline">{currentThemeData?.name}</span>
