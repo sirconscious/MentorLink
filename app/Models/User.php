@@ -27,7 +27,7 @@ class User extends Authenticatable
 
         // Otherwise, perform a query check
         return $this->info()->exists();
-    }
+    } 
     /** 
      * The attributes that are mass assignable.
      *
@@ -40,7 +40,15 @@ class User extends Authenticatable
         'google_id' , 
         "github_id"
     ];
+    public function demandesEnvoyees() // Demandes où l'user est le mentoré
+    {
+        return $this->hasMany(Demande::class, 'user_id');
+    }
 
+    public function demandesRecues() // Demandes où l'user est le mentor
+    {
+        return $this->hasMany(Demande::class, 'mentor_id');
+    }
     /**
      * The attributes that should be hidden for serialization.
      *

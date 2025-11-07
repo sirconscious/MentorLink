@@ -15,14 +15,24 @@ export function NavMain({
   items
 }) { 
   const { url: currentUrl } = usePage();
+  const { auth } = usePage().props;
+  const role = auth.roles[0];
   
   const isActiveItem = (itemUrl) => {
     if (currentUrl === itemUrl) return true;
     if (currentUrl.startsWith(itemUrl + '/')) return true;
     if (itemUrl === '/' && currentUrl === '/') return true;
-    return false;
+    return false; 
   };
-  
+
+  // Filtrer les éléments selon le rôle
+  const filteredItems = items.filter(item => {
+    if (item.title === "Demande recues") {
+      return role === 'mentor';
+    }
+    return true;
+  });
+
   return (
     <SidebarGroup>
       <SidebarGroupContent className="flex flex-col gap-2">
@@ -44,7 +54,7 @@ export function NavMain({
           </SidebarMenuItem>
         </SidebarMenu>
         <SidebarMenu>
-          {items.map((item) => {
+          {filteredItems.map((item) => {
             const isActive = isActiveItem(item.url);
             
             return (

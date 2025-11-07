@@ -16,7 +16,8 @@ import {
   IconReport,
   IconSearch,
   IconSettings,
-  IconUsers,
+  IconUsers, 
+  IconSend,
 } from "@tabler/icons-react"
 
 import { NavDocuments } from "@/components/nav-documents"
@@ -50,13 +51,13 @@ const data = {
       icon: IconListDetails,
     },
     {
-      title: "Analytics",
-      url: "#",
-      icon: IconChartBar,
+      title: "Demande envoyees",
+      url: "/mes-demandes/envoyees",
+      icon: IconSend ,
     },
     {
-      title: "Projects",
-      url: "#",
+      title: "Demande recues",
+      url: "/mes-demandes/recues",
       icon: IconFolder,
     },
     {

@@ -20,5 +20,6 @@ class Info extends Model
     public function subjects()
     {
         return $this->belongsToMany(Subject::class, 'info_subject', 'info_id', 'subject_id');
-    }
+    } 
+ 
 }

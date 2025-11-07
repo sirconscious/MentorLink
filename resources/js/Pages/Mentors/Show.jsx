@@ -2,6 +2,7 @@ import { Head, Link } from '@inertiajs/react';
 import { ArrowLeft, Star, BookOpen, Award, Mail, Clock } from 'lucide-react';
 import DashboardLayout from '../Layouts/DashboardLayout';
 import { Pie, PieChart, Cell, ResponsiveContainer } from 'recharts';
+import { router } from '@inertiajs/react';
 
 export default function MentorShow({ mentor }) {
     // Simple pie chart data
@@ -10,6 +11,10 @@ export default function MentorShow({ mentor }) {
         value: 1,
         color: ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884D8'][index % 5]
     }));
+
+    const handleDemande = (id) => {
+        router.get(`/mentors/${id}/demande`);
+    };
 
     return (
         <>
@@ -129,7 +134,10 @@ export default function MentorShow({ mentor }) {
                                         </div>
                                     </div>
 
-                                    <button className="w-full px-4 py-3 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors">
+                                    <button 
+                                        onClick={() => handleDemande(mentor.id)} 
+                                        className="w-full px-4 py-3 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors font-medium"
+                                    >
                                         Demander une session
                                     </button>
                                 </div>
