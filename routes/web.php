@@ -72,3 +72,7 @@ Route::get("/rate/{id}" , function(Request $request , $id){
     ]);
 })->middleware(["auth"]);
 Route::post('/ratings', [RatingController::class, 'store'])->name('ratings.store');
+
+Route::get('/progress', function () {
+    return inertia('Progress');
+});
