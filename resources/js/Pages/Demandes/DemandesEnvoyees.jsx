@@ -2,7 +2,7 @@ import { Head, Link, router } from '@inertiajs/react';
 import DashboardLayout from '../Layouts/DashboardLayout';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Calendar, Clock, User, ArrowLeft, Trash2, MoreHorizontal } from 'lucide-react';
+import { Calendar, Clock, User, ArrowLeft, Trash2, MoreHorizontal, Star } from 'lucide-react';
 import {
     Table,
     TableBody,
@@ -39,7 +39,7 @@ export default function DemandesEnvoyees({ demandes }) {
 
     const deleteDemande = (id) => {
         if (confirm('Êtes-vous sûr de vouloir supprimer cette demande ?')) {
-            router.delete(route('demandes.destroy', id));
+            router.delete(`/demandes/${id}`);
         }
     };
 
@@ -52,6 +52,10 @@ export default function DemandesEnvoyees({ demandes }) {
             hour: '2-digit',
             minute: '2-digit'
         });
+    };
+
+    const handleRating = (mentorId) => {
+        router.get(`/rate/${mentorId}`);
     };
 
     return (
@@ -158,6 +162,15 @@ export default function DemandesEnvoyees({ demandes }) {
                                                             </Button>
                                                         </DropdownMenuTrigger>
                                                         <DropdownMenuContent align="end">
+                                                            {demande.status === 'accepted' && (
+                                                                <DropdownMenuItem
+                                                                    onClick={() => handleRating(demande.mentor.id)}
+                                                                    className="text-yellow-600"
+                                                                >
+                                                                    <Star className="w-4 h-4 mr-2" />
+                                                                    Noter le mentor
+                                                                </DropdownMenuItem>
+                                                            )}
                                                             {demande.status === 'pending' && (
                                                                 <DropdownMenuItem
                                                                     onClick={() => deleteDemande(demande.id)}

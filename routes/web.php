@@ -62,4 +62,11 @@ Route::middleware(['auth'])->group(function () {
         ->name('demandes.updateStatus');
     Route::delete('/demandes/{demande}', [DemandeController::class, 'destroy'])
         ->name('demandes.destroy');
+}); 
+
+
+Route::get("/rate/{id}" , function(Request $request , $id){
+    return inertia("Demandes/RateSession", [
+        "id" => $id
+    ]);
 });

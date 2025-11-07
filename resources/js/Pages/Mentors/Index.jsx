@@ -31,7 +31,7 @@ export default function Index({ mentors, subjects, filters }) {
     };
 
     const hasActiveFilters = selectedSubject || selectedNiveau;
-
+    console.log(mentors)
     return (
         <>
             <Head title="Trouver un mentor" />

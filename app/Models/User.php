@@ -38,7 +38,8 @@ class User extends Authenticatable
         'email',
         'password', 
         'google_id' , 
-        "github_id"
+        "github_id" , 
+        "points"
     ];
     public function demandesEnvoyees() // Demandes où l'user est le mentoré
     {

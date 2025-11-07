@@ -15,7 +15,7 @@ export default function MentorShow({ mentor }) {
     const handleDemande = (id) => {
         router.get(`/mentors/${id}/demande`);
     };
-
+    console.log(mentor)
     return (
         <>
             <Head title={`Mentor - ${mentor.name}`} />
@@ -29,7 +29,7 @@ export default function MentorShow({ mentor }) {
                                 className="inline-flex items-center gap-2 text-muted-foreground hover:text-foreground mb-4 transition-colors"
                             >
                                 <ArrowLeft className="w-4 h-4" />
-                                Retour aux mentors
+                                Retour aux mentors 
                             </Link>
 
                             <div className="flex items-center gap-4">

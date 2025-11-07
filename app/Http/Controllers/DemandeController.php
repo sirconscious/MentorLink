@@ -78,7 +78,9 @@ class DemandeController extends Controller
         $request->validate([
             'status' => ['required', Rule::in(['accepted', 'rejected'])]
         ]);
-
+        if ($request->status == "accepted") {
+            $demande->mentor->increment('points', 10);
+                } 
         $demande->update([
             'status' => $request->status
         ]);

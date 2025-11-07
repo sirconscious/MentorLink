@@ -14,8 +14,10 @@ class MentorController extends Controller
         $query = User::whereHas('roles', function ($q) {
             $q->where('name', 'mentor');
         })
-            ->whereHas('info') // Only mentors who completed their info
-            ->with(['info.subjects']);
+            ->whereHas('info')
+            ->with(['info.subjects', 'demandesRecues' => function ($query) {
+                $query->where('status', 'accepted');
+            }]);
 
         // Filter by subject if provided
         if ($request->has('subject') && $request->subject) {
@@ -31,19 +33,20 @@ class MentorController extends Controller
             });
         }
 
-        // Get mentors with their stats
+        // Get mentors with their real stats
         $mentors = $query->get()->map(function ($mentor) {
+            $total_sessions = $mentor->demandesRecues->count();
+
             return [
                 'id' => $mentor->id,
                 'name' => $mentor->name,
                 'email' => $mentor->email,
-                'niveau_etude' => $mentor->info->niveau_etude,
-                'bio' => $mentor->info->bio,
-                'subjects' => $mentor->info->subjects,
-                // Placeholder stats - you'll implement these later with sessions
+                'niveau_etude' => $mentor->info->niveau_etude ?? '',
+                'bio' => $mentor->info->bio ?? '',
+                'subjects' => $mentor->info->subjects ?? [],
                 'average_rating' => 0,
-                'total_sessions' => 0,
-                'points' => 0,
+                'total_sessions' => $total_sessions,
+                'points' => $mentor->points ?? 0,
             ];
         });
 
@@ -65,21 +68,24 @@ class MentorController extends Controller
         $mentor = User::whereHas('roles', function ($q) {
             $q->where('name', 'mentor');
         })
-            ->with(['info.subjects'])
+            ->with(['info.subjects', 'demandesRecues' => function ($query) {
+                $query->where('status', 'accepted');
+            }])
             ->findOrFail($id);
+
+        $total_sessions = $mentor->demandesRecues->count();
 
         return inertia('Mentors/Show', [
             'mentor' => [
                 'id' => $mentor->id,
                 'name' => $mentor->name,
                 'email' => $mentor->email,
-                'niveau_etude' => $mentor->info->niveau_etude,
-                'bio' => $mentor->info->bio,
-                'subjects' => $mentor->info->subjects,
-                // Placeholder stats
+                'niveau_etude' => $mentor->info->niveau_etude ?? '',
+                'bio' => $mentor->info->bio ?? '',
+                'subjects' => $mentor->info->subjects ?? [],
                 'average_rating' => 0,
-                'total_sessions' => 0,
-                'points' => 0,
+                'total_sessions' => $total_sessions,
+                'points' => $mentor->points ?? 0,
             ]
         ]);
     }
