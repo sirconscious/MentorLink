@@ -131,28 +131,30 @@ export default function Chat({ subject, subjects, subject_message }) {
                                         <MessageSquare className="w-5 h-5" />
                                         Groupes de discussion
                                     </CardTitle>
-                                    <Button
+                                    {/* <Button
                                         variant="ghost"
                                         size="sm"
                                         onClick={() => setShowSidebar(false)}
                                         className="hidden lg:flex"
                                     >
                                         <ChevronLeft className="w-4 h-4" />
-                                    </Button>
+                                    </Button> */}
                                 </CardHeader>
                                 <CardContent>
-                                    <div className="space-y-2">
-                                        {subjects.map((subj, index) => (
-                                            <Button
-                                                key={index}
-                                                variant={subj.id === subject.id ? "default" : "outline"}
-                                                className="w-full justify-start"
-                                                onClick={() => handleChat(subj.id)}
-                                            >
-                                                {subj.name}
-                                            </Button>
-                                        ))}
-                                    </div>
+                                    <ScrollArea className="h-96"> {/* Added ScrollArea here */}
+                                        <div className="space-y-2 pr-4">
+                                            {subjects.map((subj, index) => (
+                                                <Button
+                                                    key={index}
+                                                    variant={subj.id === subject.id ? "default" : "outline"}
+                                                    className="w-full justify-start"
+                                                    onClick={() => handleChat(subj.id)}
+                                                >
+                                                    {subj.name}
+                                                </Button>
+                                            ))}
+                                        </div>
+                                    </ScrollArea>
                                 </CardContent>
                             </Card>
                         )}

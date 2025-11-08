@@ -115,6 +115,12 @@ Route::post("/message/{subject}", function (Request $request, Subject $subject) 
 
 //posts routes 
 Route::middleware(["auth"])->prefix("/posts")->group(function(){
-    Route::get("/create" , [PostsController::class , "create"])->name("posts.create");
-    
+    Route::get('/create', [PostsController::class, 'create'])->name('posts.create');
+    Route::post('/', [PostsController::class, 'store'])->name('posts.store');
+    Route::get('/', [PostsController::class, 'index'])->name('posts.index');
+    Route::get('/{post}', [PostsController::class, 'show'])->name('posts.show'); // Add this line
+
+    Route::post('/{post}/upvote', [PostsController::class, 'upvote'])->name('posts.upvote');
+    Route::post('/{post}/downvote', [PostsController::class, 'downvote'])->name('posts.downvote');
+    Route::post('/{post}/remove-vote', [PostsController::class, 'removeVote'])->name('posts.remove-vote');
 });

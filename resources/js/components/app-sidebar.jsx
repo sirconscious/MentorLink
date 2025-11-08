@@ -67,7 +67,7 @@ const data = {
     }, 
     {
       title: "Posts",
-      url: "/posts/create",
+      url: "/posts",
       icon: IconReport,
     },
   ],
