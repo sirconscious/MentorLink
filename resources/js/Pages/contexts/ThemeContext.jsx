@@ -15,7 +15,7 @@ export function ThemeProvider({ children }) {
   const applyTheme = (themeName) => {
     const root = document.documentElement;
     // Remove all theme classes
-    root.classList.remove('theme1', 'theme2', 'theme3');
+    root.classList.remove('theme1', 'theme2', 'theme3' , 'theme4');
     // Add the current theme class
     root.classList.add(themeName);
     localStorage.setItem('app-theme', themeName);

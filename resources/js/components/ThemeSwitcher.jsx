@@ -32,6 +32,14 @@ export default function ThemeSwitcher() {
       description: 'Elegant and deep',
       icon: <Moon className="h-4 w-4" />,
       colors: ['bg-[#5676f7]', 'bg-[#6475ff]', 'bg-[#6746ff]']
+    } , 
+    {
+      id: 'theme4',
+      name: 'Doom 64',
+      description: 'gamers will know',
+      icon: <Moon className="h-4 w-4" />,
+      colors: ['bg-[#cccccc]', 'bg-[#b71c1c]', 'bg-[#556b2f]']
+
     }
   ];
 
