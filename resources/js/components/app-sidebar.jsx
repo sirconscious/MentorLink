@@ -64,6 +64,11 @@ const data = {
       title: "Chat rooms",
       url: "/chat/1",
       icon: IconUsers,
+    }, 
+    {
+      title: "Posts",
+      url: "/posts/create",
+      icon: IconReport,
     },
   ],
   navClouds: [

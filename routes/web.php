@@ -8,6 +8,7 @@ use App\Http\Controllers\authController as ControllersAuthController;
 use App\Http\Controllers\MentorController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\DemandeController;
+use App\Http\Controllers\PostsController;
 use App\Http\Controllers\RatingController;
 use App\Models\Message;
 use App\Models\Subject;
@@ -109,4 +110,11 @@ Route::post("/message/{subject}", function (Request $request, Subject $subject) 
     Broadcast::event(new ChangeProgressValue($request->content, $subject->id)); // Use ::event()
     
     return back();
-})->middleware("auth");
+})->middleware("auth"); 
+
+
+//posts routes 
+Route::middleware(["auth"])->prefix("/posts")->group(function(){
+    Route::get("/create" , [PostsController::class , "create"])->name("posts.create");
+    
+});
