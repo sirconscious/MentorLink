@@ -61,8 +61,8 @@ const data = {
       icon: IconFolder,
     },
     {
-      title: "Team",
-      url: "#",
+      title: "Chat rooms",
+      url: "/chat/1",
       icon: IconUsers,
     },
   ],
