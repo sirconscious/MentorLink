@@ -10,4 +10,7 @@ class Subject extends Model
         'name',
         'description'
     ];
-}
+    public function messages(){
+        return $this->hasMany(Message::class , "subject_id");
+    }
+} 

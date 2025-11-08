@@ -1,11 +1,16 @@
 <?php
 
+use Illuminate\Support\Facades\Broadcast;
+use App\Events\ChangeProgressValue;
+
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\authController as ControllersAuthController;
 use App\Http\Controllers\MentorController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\DemandeController;
 use App\Http\Controllers\RatingController;
+use App\Models\Message;
+use App\Models\Subject;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -72,7 +77,36 @@ Route::get("/rate/{id}" , function(Request $request , $id){
     ]);
 })->middleware(["auth"]);
 Route::post('/ratings', [RatingController::class, 'store'])->name('ratings.store');
+Route::get('/chat/{subject}', function (Request $request, Subject $subject) {
+    $subjects = Subject::all();
 
-Route::get('/progress', function () {
-    return inertia('Progress');
+    $subject_with_messages = Subject::with(['messages.user'])->find($subject->id);
+
+    return inertia('Chat', [
+        "subject" => $subject_with_messages,
+        "subjects" => $subjects,
+        "subject_messages" => $subject_with_messages->messages
+    ]);
 });
+Route::get("/message/{subject}", function (Request $request , Subject $subject){
+    $subject_with_messages = Subject::with(['messages.user'])->find($subject->id);
+    return response()->json([
+        "messages"=>$subject_with_messages
+    ]);
+});
+Route::post("/message/{subject}", function (Request $request, Subject $subject) {
+    $user = auth()->user();
+
+    if (!$user) {
+        return response()->json(['error' => 'Utilisateur non authentifié'], 401);
+    }
+
+    $message = Message::create([
+        'content' => $request->content,
+        'user_id' => $user->id,
+        'subject_id' => $subject->id
+    ]);
+    Broadcast::event(new ChangeProgressValue($request->content, $subject->id)); // Use ::event()
+    
+    return back();
+})->middleware("auth");

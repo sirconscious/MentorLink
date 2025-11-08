@@ -18,10 +18,12 @@ class ChangeProgressValue implements ShouldBroadcast
     /**
      * Create a new event instance.
      */ 
-    public $value ;
-    public function __construct($value)
+    public $value , $id ; 
+    
+    public function __construct($value , $id)
     {
         $this->value = $value;
+        $this->id = $id;
     }
 
     /**
@@ -31,8 +33,9 @@ class ChangeProgressValue implements ShouldBroadcast
      */
     public function broadcastOn(): array
     {
+
         return [
-            new Channel('progress'),
+            new Channel("progress.$this->id"),
         ];
     }
 }

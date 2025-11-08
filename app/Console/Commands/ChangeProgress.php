@@ -15,7 +15,7 @@ class ChangeProgress extends Command
     {
         $progress = $this->option("progress");
 
-        Broadcast::event(new ChangeProgressValue($progress)); // Use ::event()
+        Broadcast::event(new ChangeProgressValue($progress , 3)); // Use ::event()
 
         $this->info("Progress updated to: {$progress}");
     }
