@@ -3,7 +3,7 @@ import { ArrowLeft, Star, BookOpen, Award, Mail, Clock, User } from 'lucide-reac
 import DashboardLayout from '../Layouts/DashboardLayout';
 import { Pie, PieChart, Cell, ResponsiveContainer } from 'recharts';
 import { router } from '@inertiajs/react';
-
+import ShareDropdown from '@/components/ui/ShareDropdown';
 export default function MentorShow({ mentor }) {
     // Simple pie chart data
     const subjectData = mentor.subjects.map((subject, index) => ({

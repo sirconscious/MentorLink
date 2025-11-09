@@ -6,7 +6,8 @@ import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { MessageSquare, ThumbsUp, ThumbsDown, Eye, Calendar, ArrowLeft, Share } from 'lucide-react';
-import { router } from '@inertiajs/react';
+import { router } from '@inertiajs/react'; 
+import ShareDropdown from '@/components/ui/ShareDropdown';
 export default function Show({ post }) {
     const formatDate = (dateString) => {
         return new Date(dateString).toLocaleDateString('fr-FR', {
@@ -51,10 +52,7 @@ export default function Show({ post }) {
                                         {calculateVotePercentage(post.up_votes, post.down_votes)}% positif
                                     </Badge>
                                 </div>
-                                <Button variant="outline" size="sm" className="gap-2">
-                                    <Share className="w-4 h-4" />
-                                    Partager
-                                </Button>
+                                    <ShareDropdown />
                             </div>
                         </div>
                     </div>
@@ -130,12 +128,12 @@ export default function Show({ post }) {
                                     </div>
                                 </div>
 
-                                <div className="flex items-center gap-2">
+                                {/* <div className="flex items-center gap-2">
                                     <Button variant="outline" size="sm">
                                         <Share className="w-4 h-4 mr-1" />
                                         Partager
                                     </Button>
-                                </div>
+                                </div> */}
                             </CardFooter>
                         </Card>
 
