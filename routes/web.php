@@ -22,9 +22,9 @@ Route::get('/', function () {
     return inertia('home');
 });
 
-Route::get("/signup", function () {
-    return inertia('auth/signup');
-});
+// Route::get("/signup", function () {
+//     return inertia('auth/signup');
+// });
 
 Route::get("/login", function () {
     return inertia('auth/login');
@@ -40,7 +40,11 @@ Route::get('/auth/google/callback', [AuthController::class, 'handleGoogleCallbac
 //github oauth
 Route::get('/auth/github/redirect', [AuthController::class, 'redirectToGithub'])->name('github.redirect');
 Route::get('/auth/github/callback', [AuthController::class, 'handleGithubCallback'])->name('github.callback');
-Route::post("/logout" , [ControllersAuthController::class , "logout"])->name("logout"); ; 
+Route::post("/logout" , [ControllersAuthController::class , "logout"])->name("logout"); ;
+//facebook oauth 
+Route::get('/auth/facebook/redirect', [AuthController::class, 'redirectToFacebook']);
+Route::get('/auth/facebook/callback', [AuthController::class, 'handleFacebookCallback']);
+
 
 Route::get("/complete-info", function () {
     return inertia('CompleteInfo');

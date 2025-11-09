@@ -60,4 +60,40 @@ class AuthController extends Controller
 
         return redirect()->route('dashboard');
     }
+
+    public function redirectToFacebook()
+    {
+        return Socialite::driver('facebook')
+            ->stateless()
+            ->scopes(['email', 'public_profile'])
+            ->redirect();
+        }
+
+    public function handleFacebookCallback()
+    {
+        $facebookUser = Socialite::driver('facebook')->stateless()->user();
+
+        // See what Facebook actually returns
+        \Log::info('Facebook User Data:', [
+            'id' => $facebookUser->id,
+            'name' => $facebookUser->name,
+            'email' => $facebookUser->email,
+            'avatar' => $facebookUser->avatar,
+        ]);
+
+        $user = User::updateOrCreate(
+            ['facebook_id' => $facebookUser->id],
+            [
+                'name' => $facebookUser->name,
+                'email' => $facebookUser->email ?? null,
+                'facebook_id' => $facebookUser->id,
+                'email_verified_at' => $facebookUser->email ? now() : null,
+                'password' => bcrypt(\Str::random(16)),
+            ]
+        );
+
+        Auth::login($user);
+
+        return redirect()->route('dashboard');
+    }
 }
