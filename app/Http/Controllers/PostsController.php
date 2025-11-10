@@ -12,7 +12,7 @@ class PostsController extends Controller
     {
         $posts = Post::with('user',)
             ->orderBy('created_at', 'desc')
-            ->get();
+            ->get()->loadCount('comments');;
         return inertia('Posts/Index', [
             'posts' => $posts
         ]);

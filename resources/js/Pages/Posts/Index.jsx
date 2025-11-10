@@ -9,7 +9,7 @@ import { useState } from 'react';
 
 export default function Index({ posts }) {
     const [localPosts, setLocalPosts] = useState(posts);
-
+    console.log(posts)
     const formatDate = (dateString) => {
         return new Date(dateString).toLocaleDateString('fr-FR', {
             day: 'numeric',
@@ -169,7 +169,7 @@ export default function Index({ posts }) {
                                                 </div>
                                                 <div className="flex items-center gap-1">
                                                     <MessageSquare className="w-4 h-4" />
-                                                    <span>0 commentaires</span>
+                                                    <span>{post.comments_count ?? 0} commentaires</span>
                                                 </div>
                                             </div>
 
