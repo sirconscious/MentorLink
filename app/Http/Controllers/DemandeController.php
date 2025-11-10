@@ -99,4 +99,33 @@ class DemandeController extends Controller
 
         return back()->with('success', 'Demande supprimée!');
     }
+    // In DemandeController.php - update the calendar method
+    public function calendar()
+    {
+        // Get demandes where user is either the student or the mentor
+        $demandes = Demande::where('user_id', auth()->id())
+            ->orWhere('mentor_id', auth()->id())
+            ->with(['user:id,name', 'mentor:id,name'])
+            ->get()
+            ->map(function ($demande) {
+                return [
+                    'id' => $demande->id,
+                    'subject' => $demande->subject,
+                    'description' => $demande->description,
+                    'date_debut' => $demande->date_debut->toISOString(),
+                    'type' => $demande->type,
+                    'status' => $demande->status,
+                    'user_id' => $demande->user_id,
+                    'mentor_id' => $demande->mentor_id,
+                    'user' => $demande->user,
+                    'mentor' => $demande->mentor,
+                ];
+            });
+
+        \Log::info('Calendar demandes count: ' . $demandes->count()); // Log for debugging
+
+        return Inertia::render('MyCalendar', [
+            'demandes' => $demandes
+        ]);
+    }
 }

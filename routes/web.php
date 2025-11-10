@@ -132,4 +132,10 @@ Route::middleware(["auth"])->prefix("/posts")->group(function(){
 Route::middleware(["auth" , "roles:mentor|"])->prefix("/comment")->group(function(){
     Route::post("/{post}" , [CommentsController::class , "store"])->name("comment.store");
     Route::delete('/{comment}', [CommentsController::class, 'destroy'])->name('comments.destroy');
+}); 
+
+Route::get("/calender" , function(){
+    return inertia("MyCalendar");
 });
+
+Route::get("/calendar", [DemandeController::class, 'calendar'])->name('calendar');
