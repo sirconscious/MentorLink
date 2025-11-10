@@ -5,6 +5,7 @@ use App\Events\ChangeProgressValue;
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\authController as ControllersAuthController;
+use App\Http\Controllers\CommentsController;
 use App\Http\Controllers\MentorController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\DemandeController;
@@ -127,4 +128,8 @@ Route::middleware(["auth"])->prefix("/posts")->group(function(){
     Route::post('/{post}/upvote', [PostsController::class, 'upvote'])->name('posts.upvote');
     Route::post('/{post}/downvote', [PostsController::class, 'downvote'])->name('posts.downvote');
     Route::post('/{post}/remove-vote', [PostsController::class, 'removeVote'])->name('posts.remove-vote');
+}); 
+Route::middleware(["auth" , "roles:mentor|"])->prefix("/comment")->group(function(){
+    Route::post("/{post}" , [CommentsController::class , "store"])->name("comment.store");
+    Route::delete('/{comment}', [CommentsController::class, 'destroy'])->name('comments.destroy');
 });

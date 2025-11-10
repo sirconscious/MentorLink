@@ -7,7 +7,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import { Loader2, GraduationCap, User, BookOpen, Search, X, Sparkles, Check } from 'lucide-react';
-
+import DashboardLayout from './Layouts/DashboardLayout';
 export default function CompleteInfo() {
   const [formData, setFormData] = useState({
     niveau_etude: '',
@@ -112,7 +112,9 @@ export default function CompleteInfo() {
     'CI3'
   ];
 
-  return (
+  return ( 
+    <DashboardLayout>
+
     <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20 py-8 px-4 sm:px-6 lg:px-8">
       <div className="max-w-5xl mx-auto">
         {/* Enhanced Header */}
@@ -395,6 +397,8 @@ export default function CompleteInfo() {
 
         
       </div>
-    </div>
+    </div> 
+    </DashboardLayout>
+
   );
 }

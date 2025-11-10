@@ -10,10 +10,9 @@ class PostsController extends Controller
 {
     public function index()
     {
-        $posts = Post::with('user')
+        $posts = Post::with('user',)
             ->orderBy('created_at', 'desc')
             ->get();
-
         return inertia('Posts/Index', [
             'posts' => $posts
         ]);
@@ -44,8 +43,7 @@ class PostsController extends Controller
 
     public function show(Post $post)
     {
-        $post->load('user');
-
+        $post->load('user',"comments.user");
         return inertia('Posts/Show', [
             'post' => $post
         ]);
