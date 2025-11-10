@@ -143,8 +143,8 @@ const data = {
       icon: IconDatabase,
     },
     {
-      name: "Reports",
-      url: "#",
+      name: "Calendar",
+      url: "/calendar",
       icon: IconReport,
     },
     {
