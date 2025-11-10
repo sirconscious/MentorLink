@@ -6,6 +6,33 @@ import timeGridPlugin from '@fullcalendar/timegrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import DashboardLayout from './Layouts/DashboardLayout';
 
+// Helper functions defined outside component
+const getStatusColor = (status) => {
+    switch (status) {
+        case 'pending':
+            return '#f59e0b';
+        case 'accepted':
+            return '#10b981';
+        case 'rejected':
+            return '#ef4444';
+        default:
+            return '#6b7280';
+    }
+};
+
+const getStatusBorderColor = (status) => {
+    switch (status) {
+        case 'pending':
+            return '#d97706';
+        case 'accepted':
+            return '#059669';
+        case 'rejected':
+            return '#dc2626';
+        default:
+            return '#374151';
+    }
+};
+
 export default function MyCalendar({ demandes = [] }) {
     console.log('Demandes prop:', demandes); // Debug log
 
@@ -20,7 +47,7 @@ export default function MyCalendar({ demandes = [] }) {
             return {
                 id: `demande-${demande.id}`,
                 title: `${demande.subject} (${demande.type}) - ${demande.status}`,
-                start: startDate.toISOString(), // Ensure ISO string format
+                start: startDate.toISOString(),
                 backgroundColor: getStatusColor(demande.status),
                 textColor: '#ffffff',
                 borderColor: getStatusBorderColor(demande.status),
@@ -38,45 +65,32 @@ export default function MyCalendar({ demandes = [] }) {
         });
     }, [demandes]);
 
-    const getStatusColor = (status) => {
-        switch (status) {
-            case 'pending':
-                return '#f59e0b';
-            case 'accepted':
-                return '#10b981';
-            case 'rejected':
-                return '#ef4444';
-            default:
-                return '#6b7280';
-        }
-    };
-
-    const getStatusBorderColor = (status) => {
-        switch (status) {
-            case 'pending':
-                return '#d97706';
-            case 'accepted':
-                return '#059669';
-            case 'rejected':
-                return '#dc2626';
-            default:
-                return '#374151';
-        }
-    };
-
     // Handle date/time slot click - Create new demande
     const handleDateClick = (info) => {
         const subject = prompt('Enter demande subject:');
         if (subject) {
-            const description = prompt('Enter demande description:');
+            const description = prompt('Enter demande description (min 20 characters):');
+            if (description && description.length < 20) {
+                alert('Description must be at least 20 characters long');
+                return;
+            }
+
             const type = confirm('Select demande type: OK for Online, Cancel for Presentiel') ? 'online' : 'presentiel';
+
+            // Get mentor_id - you'll need to add a way to select this
+            const mentorId = prompt('Enter mentor ID:');
+            if (!mentorId) {
+                alert('Mentor ID is required');
+                return;
+            }
 
             router.post('/demandes', {
                 subject: subject,
                 description: description,
                 date_debut: info.dateStr,
                 type: type,
-                status: 'pending'
+                status: 'pending',
+                mentor_id: mentorId
             }, {
                 onSuccess: () => {
                     router.reload();

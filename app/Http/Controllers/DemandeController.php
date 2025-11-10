@@ -14,6 +14,7 @@ class DemandeController extends Controller
     public function create(User $mentor)
     {
         $mentor->load('info.subjects');
+
         return inertia('DemandeForm', [
             'mentor' => $mentor,
             'subjects' => $mentor->info?->subjects ?? []
@@ -78,9 +79,11 @@ class DemandeController extends Controller
         $request->validate([
             'status' => ['required', Rule::in(['accepted', 'rejected'])]
         ]);
+
         if ($request->status == "accepted") {
             $demande->mentor->increment('points', 10);
-                } 
+        }
+
         $demande->update([
             'status' => $request->status
         ]);
@@ -99,7 +102,8 @@ class DemandeController extends Controller
 
         return back()->with('success', 'Demande supprimée!');
     }
-    // In DemandeController.php - update the calendar method
+
+    // Fixed calendar method
     public function calendar()
     {
         // Get demandes where user is either the student or the mentor
@@ -112,7 +116,7 @@ class DemandeController extends Controller
                     'id' => $demande->id,
                     'subject' => $demande->subject,
                     'description' => $demande->description,
-                    'date_debut' => $demande->date_debut->toISOString(),
+                    'date_debut' => $demande->date_debut->format('Y-m-d\TH:i:s'), // Fixed this line
                     'type' => $demande->type,
                     'status' => $demande->status,
                     'user_id' => $demande->user_id,
@@ -122,10 +126,29 @@ class DemandeController extends Controller
                 ];
             });
 
-        \Log::info('Calendar demandes count: ' . $demandes->count()); // Log for debugging
+        \Log::info('Calendar demandes count: ' . $demandes->count());
+        \Log::info('Calendar demandes data: ' . json_encode($demandes));
 
         return Inertia::render('MyCalendar', [
             'demandes' => $demandes
         ]);
+    }
+
+    // Add update method for calendar drag/drop
+    public function update(Request $request, Demande $demande)
+    {
+        // Check if user is either the student or mentor
+        if ($demande->user_id !== Auth::id() && $demande->mentor_id !== Auth::id()) {
+            abort(403);
+        }
+
+        $request->validate([
+            'date_debut' => 'sometimes|date',
+            'status' => ['sometimes', Rule::in(['pending', 'accepted', 'rejected'])],
+        ]);
+
+        $demande->update($request->only(['date_debut', 'status']));
+
+        return back()->with('success', 'Demande mise à jour!');
     }
 }

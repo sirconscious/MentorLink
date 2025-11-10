@@ -134,8 +134,6 @@ Route::middleware(["auth" , "roles:mentor|"])->prefix("/comment")->group(functio
     Route::delete('/{comment}', [CommentsController::class, 'destroy'])->name('comments.destroy');
 }); 
 
-Route::get("/calender" , function(){
-    return inertia("MyCalendar");
-});
 
-Route::get("/calendar", [DemandeController::class, 'calendar'])->name('calendar');
+
+Route::get("/calendar", [DemandeController::class, 'calendar'])->name('calendar')->middleware(["auth"]);
