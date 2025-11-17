@@ -11,6 +11,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\DemandeController;
 use App\Http\Controllers\PostsController;
 use App\Http\Controllers\RatingController;
+use App\Http\Controllers\StatsController;
 use App\Models\Message;
 use App\Models\Subject;
 use App\Models\User;
@@ -136,4 +137,7 @@ Route::middleware(["auth" , "roles:mentor|"])->prefix("/comment")->group(functio
 
 
 
-Route::get("/calendar", [DemandeController::class, 'calendar'])->name('calendar')->middleware(["auth"]);
+Route::get("/calendar", [DemandeController::class, 'calendar'])->name('calendar')->middleware(["auth"]); 
+
+
+Route::get("/stats", [StatsController::class , "mentorStats"])->middleware('auth');

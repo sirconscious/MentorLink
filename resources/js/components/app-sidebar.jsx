@@ -17,7 +17,8 @@ import {
   IconSearch,
   IconSettings,
   IconUsers, 
-  IconSend,
+  IconSend, 
+  
 } from "@tabler/icons-react"
 
 import { NavDocuments } from "@/components/nav-documents"
@@ -69,7 +70,12 @@ const data = {
       title: "Posts",
       url: "/posts",
       icon: IconReport,
-    },
+    }, 
+    {
+      title: "Calendar",
+      url: "/calendar",
+      icon: IconReport,
+    }
   ],
   navClouds: [
     {
@@ -142,11 +148,7 @@ const data = {
       url: "#",
       icon: IconDatabase,
     },
-    {
-      name: "Calendar",
-      url: "/calendar",
-      icon: IconReport,
-    },
+   
     {
       name: "Word Assistant",
       url: "#",
