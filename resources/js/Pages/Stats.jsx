@@ -3,6 +3,10 @@ import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { usePage } from '@inertiajs/react'; 
+import { AlertDialogDemo } from "@/components/AlertDialogDemo"
+import { AlertCircle, Github } from "lucide-react"
+
 import {
   Star,
   Trophy,
@@ -320,10 +324,13 @@ export default function Stats({ user }) {
       </div>
     );
   };
+  const role = usePage().props.auth.roles[0];
 
   return ( 
     <DashboardLayout>
-
+  {
+    role == "mentor" ?
+  
     <div className="p-6 space-y-6">
       {/* Header Section */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
@@ -555,7 +562,33 @@ export default function Stats({ user }) {
           </div>
         </CardContent>
       </Card>
-    </div> 
+    </div>  
+
+            :  
+            <div className="flex flex-1 items-center justify-center p-4">
+            <Card className="w-full max-w-md">
+              <CardContent className="pt-6">
+                <div className="flex flex-col items-center text-center space-y-4">
+                  <div className="rounded-full bg-muted p-3">
+                    <AlertCircle className="h-6 w-6 text-muted-foreground" />
+                  </div>
+
+                  <div className="space-y-2">
+                    <h2 className="text-2xl font-semibold">Not a Mentor Yet</h2>
+                    <p className="text-muted-foreground text-sm">
+                      You need to meet the mentor requirements to access this dashboard.
+                    </p>
+                  </div>
+
+                  <div className="w-full pt-2 space-y-3">
+                 
+                    <AlertDialogDemo/>
+                  
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </div> }
     </DashboardLayout>
 
   );

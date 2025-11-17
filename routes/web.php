@@ -32,9 +32,9 @@ Route::get("/login", function () {
     return inertia('auth/login');
 })->name("login");
 
-Route::get("/dashboard", function () {
-    return inertia('dashboard');
-})->middleware(['auth'])->name('dashboard');
+// Route::get("/dashboard", function () {
+//     return inertia('dashboard');
+// })->middleware(['auth'])->name('dashboard');
 
 //google oauth
 Route::get('/auth/google/redirect', [AuthController::class, 'redirectToGoogle'])->name('google.redirect');
@@ -140,4 +140,4 @@ Route::middleware(["auth" , "roles:mentor|"])->prefix("/comment")->group(functio
 Route::get("/calendar", [DemandeController::class, 'calendar'])->name('calendar')->middleware(["auth"]); 
 
 
-Route::get("/stats", [StatsController::class , "mentorStats"])->middleware('auth');
+Route::get("/dashboard", [StatsController::class , "mentorStats"])->middleware('auth')->name("dashboard");
