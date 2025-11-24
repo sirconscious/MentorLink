@@ -140,4 +140,10 @@ Route::middleware(["auth" , "roles:mentor|"])->prefix("/comment")->group(functio
 Route::get("/calendar", [DemandeController::class, 'calendar'])->name('calendar')->middleware(["auth"]); 
 
 
-Route::get("/dashboard", [StatsController::class , "mentorStats"])->middleware('auth')->name("dashboard");
+Route::get("/dashboard", [StatsController::class , "mentorStats"])->middleware('auth')->name("dashboard"); 
+
+
+
+Route::get("/ctf" , function(){
+        return inertia("Ctf") ;
+}) ;
