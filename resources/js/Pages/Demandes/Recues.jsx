@@ -33,7 +33,7 @@ import { useState } from 'react';
 export default function DemandesRecues({ demandes }) {
     const [selectedDemande, setSelectedDemande] = useState(null);
     const [actionType, setActionType] = useState('');
-
+    console.log(demandes);
     const getStatusColor = (status) => {
         switch (status) {
             case 'pending': return 'bg-yellow-100 text-yellow-800';
@@ -186,7 +186,7 @@ export default function DemandesRecues({ demandes }) {
                                                             <DropdownMenuContent align="end">
                                                                 <AlertDialog>
                                                                     <AlertDialogTrigger asChild>
-                                                                        <DropdownMenuItem 
+                                                                        <DropdownMenuItem
                                                                             onSelect={(e) => e.preventDefault()}
                                                                             onClick={() => handleAction(demande, 'accepted')}
                                                                             className="text-green-600 cursor-pointer"
@@ -199,13 +199,13 @@ export default function DemandesRecues({ demandes }) {
                                                                         <AlertDialogHeader>
                                                                             <AlertDialogTitle>Confirmer l'acceptation</AlertDialogTitle>
                                                                             <AlertDialogDescription>
-                                                                                Êtes-vous sûr de vouloir accepter la demande de "{demande.subject}" 
+                                                                                Êtes-vous sûr de vouloir accepter la demande de "{demande.subject}"
                                                                                 de {demande.user.name} ? Cette action ne peut pas être annulée.
                                                                             </AlertDialogDescription>
                                                                         </AlertDialogHeader>
                                                                         <AlertDialogFooter>
                                                                             <AlertDialogCancel>Annuler</AlertDialogCancel>
-                                                                            <AlertDialogAction 
+                                                                            <AlertDialogAction
                                                                                 onClick={confirmAction}
                                                                                 className="bg-green-600 hover:bg-green-700"
                                                                             >
@@ -217,7 +217,7 @@ export default function DemandesRecues({ demandes }) {
 
                                                                 <AlertDialog>
                                                                     <AlertDialogTrigger asChild>
-                                                                        <DropdownMenuItem 
+                                                                        <DropdownMenuItem
                                                                             onSelect={(e) => e.preventDefault()}
                                                                             onClick={() => handleAction(demande, 'rejected')}
                                                                             className="text-red-600 cursor-pointer"
@@ -230,13 +230,13 @@ export default function DemandesRecues({ demandes }) {
                                                                         <AlertDialogHeader>
                                                                             <AlertDialogTitle>Confirmer le refus</AlertDialogTitle>
                                                                             <AlertDialogDescription>
-                                                                                Êtes-vous sûr de vouloir refuser la demande de "{demande.subject}" 
+                                                                                Êtes-vous sûr de vouloir refuser la demande de "{demande.subject}"
                                                                                 de {demande.user.name} ? Cette action ne peut pas être annulée.
                                                                             </AlertDialogDescription>
                                                                         </AlertDialogHeader>
                                                                         <AlertDialogFooter>
                                                                             <AlertDialogCancel>Annuler</AlertDialogCancel>
-                                                                            <AlertDialogAction 
+                                                                            <AlertDialogAction
                                                                                 onClick={confirmAction}
                                                                                 className="bg-red-600 hover:bg-red-700"
                                                                             >
@@ -247,6 +247,14 @@ export default function DemandesRecues({ demandes }) {
                                                                 </AlertDialog>
                                                             </DropdownMenuContent>
                                                         </DropdownMenu>
+                                                    ) : demande.status === 'accepted' && demande.room ? (
+                                                        <Button
+                                                            size="sm"
+                                                            onClick={() => window.open(`${demande.room.room_url}?accessToken=${demande.room.access_token}`, '_blank')}
+                                                            className="bg-blue-600 hover:bg-blue-700"
+                                                        >
+                                                            Rejoindre
+                                                        </Button>
                                                     ) : (
                                                         <div className="text-sm text-muted-foreground text-right">
                                                             Traitée

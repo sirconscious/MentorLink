@@ -28,5 +28,8 @@ class Demande extends Model
     public function mentor()
     {
         return $this->belongsTo(User::class, "mentor_id");
+    } 
+    public function room(){
+        return $this->hasOne(Room::class , "demande_id" );
     }
 }

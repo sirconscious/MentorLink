@@ -2,7 +2,7 @@ import { Head, Link, router } from '@inertiajs/react';
 import DashboardLayout from '../Layouts/DashboardLayout';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Calendar, Clock, User, ArrowLeft, Trash2, MoreHorizontal, Star } from 'lucide-react';
+import { Calendar, Clock, User, ArrowLeft, Trash2, MoreHorizontal, Star, Video } from 'lucide-react';
 import {
     Table,
     TableBody,
@@ -19,6 +19,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 export default function DemandesEnvoyees({ demandes }) {
+    console.log(demandes)
     const getStatusColor = (status) => {
         switch (status) {
             case 'pending': return 'bg-yellow-100 text-yellow-800';
@@ -155,33 +156,44 @@ export default function DemandesEnvoyees({ demandes }) {
                                                     </Badge>
                                                 </TableCell>
                                                 <TableCell className="text-right">
-                                                    <DropdownMenu>
-                                                        <DropdownMenuTrigger asChild>
-                                                            <Button variant="ghost" className="h-8 w-8 p-0">
-                                                                <MoreHorizontal className="h-4 w-4" />
-                                                            </Button>
-                                                        </DropdownMenuTrigger>
-                                                        <DropdownMenuContent align="end">
-                                                            {demande.status === 'accepted' && (
-                                                                <DropdownMenuItem
-                                                                    onClick={() => handleRating(demande.mentor.id)}
-                                                                    className="text-yellow-600"
-                                                                >
-                                                                    <Star className="w-4 h-4 mr-2" />
-                                                                    Noter le mentor
-                                                                </DropdownMenuItem>
-                                                            )}
-                                                            {demande.status === 'pending' && (
-                                                                <DropdownMenuItem
-                                                                    onClick={() => deleteDemande(demande.id)}
-                                                                    className="text-red-600"
-                                                                >
-                                                                    <Trash2 className="w-4 h-4 mr-2" />
-                                                                    Supprimer
-                                                                </DropdownMenuItem>
-                                                            )}
-                                                        </DropdownMenuContent>
-                                                    </DropdownMenu>
+                                                    {demande.status === 'accepted' && demande.room ? (
+                                                        <Button
+                                                            size="sm"
+                                                            onClick={() => window.open(`${demande.room.room_url}?accessToken=${demande.room.access_token}`, '_blank')}
+                                                            className="bg-blue-600 hover:bg-blue-700"
+                                                        >
+                                                            <Video className="w-4 h-4 mr-2" />
+                                                            Rejoindre
+                                                        </Button>
+                                                    ) : (
+                                                        <DropdownMenu>
+                                                            <DropdownMenuTrigger asChild>
+                                                                <Button variant="ghost" className="h-8 w-8 p-0">
+                                                                    <MoreHorizontal className="h-4 w-4" />
+                                                                </Button>
+                                                            </DropdownMenuTrigger>
+                                                            <DropdownMenuContent align="end">
+                                                                {demande.status === 'accepted' && (
+                                                                    <DropdownMenuItem
+                                                                        onClick={() => handleRating(demande.mentor.id)}
+                                                                        className="text-yellow-600"
+                                                                    >
+                                                                        <Star className="w-4 h-4 mr-2" />
+                                                                        Noter le mentor
+                                                                    </DropdownMenuItem>
+                                                                )}
+                                                                {demande.status === 'pending' && (
+                                                                    <DropdownMenuItem
+                                                                        onClick={() => deleteDemande(demande.id)}
+                                                                        className="text-red-600"
+                                                                    >
+                                                                        <Trash2 className="w-4 h-4 mr-2" />
+                                                                        Supprimer
+                                                                    </DropdownMenuItem>
+                                                                )}
+                                                            </DropdownMenuContent>
+                                                        </DropdownMenu>
+                                                    )}
                                                 </TableCell>
                                             </TableRow>
                                         ))}

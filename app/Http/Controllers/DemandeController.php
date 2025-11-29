@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Demande;
 use App\Models\User;
+use App\Services\MeteredService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
@@ -48,7 +49,7 @@ class DemandeController extends Controller
     public function demandesEnvoyees()
     {
         $demandes = Auth::user()->demandesEnvoyees()
-            ->with('mentor.info')
+            ->with('mentor.info')->with("room")
             ->latest()
             ->get();
 
@@ -60,7 +61,7 @@ class DemandeController extends Controller
     public function demandesRecues()
     {
         $demandes = Auth::user()->demandesRecues()
-            ->with('user.info')
+            ->with('user.info')->with('room')
             ->latest()
             ->get();
 
@@ -68,7 +69,6 @@ class DemandeController extends Controller
             'demandes' => $demandes
         ]);
     }
-
     public function updateStatus(Request $request, Demande $demande)
     {
         // Vérifier que l'utilisateur est le mentor de cette demande
@@ -81,6 +81,41 @@ class DemandeController extends Controller
         ]);
 
         if ($request->status == "accepted") {
+            // Only create room if type is online
+            if ($demande->type == "online") {
+                $metered = new MeteredService();
+
+                // Generate unique room name
+                $roomName = 'demande-' . $demande->id . '-' . time();
+
+                // Create room on Metered
+                $meteredRoom = $metered->createRoom($roomName, [
+                    'privacy' => 'private',
+                    'enableChat' => true,
+                    'enableScreenSharing' => true,
+                ]);
+
+                \Log::info('Metered Room Response: ' . json_encode($meteredRoom));
+
+                // Check if room creation was successful
+                if (!isset($meteredRoom['_id'])) {
+                    \Log::error('Failed to create Metered room: ' . json_encode($meteredRoom));
+                    return back()->with('error', 'Erreur lors de la création de la salle de réunion');
+                }
+
+                // Generate access token
+                $token = $metered->generateToken($roomName);
+
+                // Create room in database
+                $demande->room()->create([
+                    'roomName' => $roomName,
+                    'metered_room_id' => $meteredRoom['_id'],
+                    'room_url' => "https://{$metered->domain}/{$roomName}",
+                    'access_token' => $token,
+                ]);
+            }
+
+            // Increment mentor points
             $demande->mentor->increment('points', 10);
         }
 

@@ -50,5 +50,9 @@ return [
         "client_id" => env('FACEBOOK_CLIENT_ID'),
         "client_secret" => env('FACEBOOK_CLIENT_SECRET'),
         "redirect" => env('FACEBOOK_REDIRECT_URL')
+    ] ,
+    "metered" => [
+        "secret_key" => env("METERED_CLIENT_SECRET"),
+        "domain" => env("METERED_DOMAIN", "mentorlink.metered.live")
     ]
 ];
