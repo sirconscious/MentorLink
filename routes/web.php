@@ -146,4 +146,4 @@ Route::get("/dashboard", [StatsController::class , "mentorStats"])->middleware('
 
 Route::get("/ctf" , function(){
         return inertia("Ctf") ;
-}) ;
+})->middleware("auth") ;

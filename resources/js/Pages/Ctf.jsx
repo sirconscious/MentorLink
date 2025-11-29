@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { Terminal } from 'xterm';
-
+import DashboardLayout from './Layouts/DashboardLayout';
 const DockerTerminal = () => {
     const terminalRef = useRef(null);
     const [status, setStatus] = useState('Connecting...');
@@ -40,7 +40,7 @@ const DockerTerminal = () => {
         ws.current = new WebSocket('ws://localhost:3000');
 
         ws.current.onopen = () => {
-            setStatus('✅ Connected to server');
+            setStatus('Connected to server');
             setIsConnected(true);
             term.current.writeln('\x1b[32mConnected to server...\x1b[0m');
         };
@@ -70,13 +70,15 @@ const DockerTerminal = () => {
         });
     };
 
-    return (
-        <div className="min-h-screen p-5 bg-gray-900 font-mono">
+    return ( 
+        <DashboardLayout>
+
+            <div className="min-h-screen p-5 bg-background font-mono">
             <div className="max-w-7xl mx-auto">
                 {/* Header */}
-                <h1 className="text-3xl text-green-400 text-center mb-4">
+                {/* <h1 className="text-3xl text-green-400 text-center mb-4">
                     🐳 Docker Terminal
-                </h1>
+                </h1> */}
 
                 {/* Status */}
                 <div
@@ -92,7 +94,9 @@ const DockerTerminal = () => {
                     className="w-full h-[600px] bg-black rounded-lg overflow-hidden"
                 />
             </div>
-        </div>
+        </div> 
+        </DashboardLayout>
+
     );
 };
 
