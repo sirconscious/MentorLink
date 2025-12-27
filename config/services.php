@@ -54,5 +54,9 @@ return [
     "metered" => [
         "secret_key" => env("METERED_CLIENT_SECRET"),
         "domain" => env("METERED_DOMAIN", "mentorlink.metered.live")
-    ]
+    ] ,
+    'nextcloud' => [
+        'url' => env('NEXTCLOUD_URL'),
+        'share_token' => env('NEXTCLOUD_SHARE_TOKEN'),
+    ],
 ];

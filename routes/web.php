@@ -6,6 +6,7 @@ use App\Events\ChangeProgressValue;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\authController as ControllersAuthController;
 use App\Http\Controllers\CommentsController;
+use App\Http\Controllers\CourseController;
 use App\Http\Controllers\MentorController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\DemandeController;
@@ -147,3 +148,17 @@ Route::get("/dashboard", [StatsController::class , "mentorStats"])->middleware('
 Route::get("/ctf" , function(){
         return inertia("Ctf") ;
 })->middleware("auth") ;
+
+
+// Route::middleware('auth')->group(function () {
+    Route::get('/courses', [CourseController::class, 'index'])->name('courses.index');
+    Route::get('/courses/view/{filename}', [CourseController::class, 'show'])->name('courses.show');
+    Route::get('/courses/proxy/{filename}', [CourseController::class, 'proxy'])->name('courses.proxy');
+    Route::get('/courses/download/{filename}', [CourseController::class, 'download'])->name('courses.download');
+//});
+
+Route::get('/test-shared-folder', function () {
+    $nextcloud = app(\App\Services\NextcloudService::class);
+    $files = $nextcloud->listFiles();
+    return response()->json($files);
+});
