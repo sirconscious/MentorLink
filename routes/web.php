@@ -14,6 +14,7 @@ use App\Http\Controllers\DemandeController;
 use App\Http\Controllers\JellyController;
 use App\Http\Controllers\JellyFinController;
 use App\Http\Controllers\PostsController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RatingController;
 use App\Http\Controllers\StatsController;
 use App\Models\Message;
@@ -172,3 +173,7 @@ Route::get('/test-shared-folder', function () {
 // Route::get('/jellyfin-debug', [JellyfinController::class, 'debug'])->name('jellyfin.debug');
 // Route::get('/jellyfin/video/{videoId}', [JellyfinController::class, 'proxyVideo']); 
 Route::get('/create-jellyfin-user', [JellyController::class, 'createUser']);
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
+});
