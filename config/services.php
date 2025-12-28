@@ -59,4 +59,8 @@ return [
         'url' => env('NEXTCLOUD_URL'),
         'share_token' => env('NEXTCLOUD_SHARE_TOKEN'),
     ],
+    'jellyfin' => [
+        'url' => env('JELLYFIN_URL'),
+        'api_key' => env('JELLYFIN_API_KEY'),
+    ],
 ];

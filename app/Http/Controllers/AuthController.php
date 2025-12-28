@@ -6,6 +6,8 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Socialite\Facades\Socialite;
+use App\Http\Controllers\JellyController;
+use App\Models\JelliFinToken;
 
 class AuthController extends Controller
 {
@@ -27,10 +29,22 @@ class AuthController extends Controller
             ]
         );
 
-        // Ensure user has role 3 without duplicates
-        // $user->roles()->syncWithoutDetaching([3]);
-
         Auth::login($user);
+
+        // Generate token for Jellyfin
+        $token = \Str::random(12);
+
+        // Create Jellyfin user with email + token
+        $jellyController = new JellyController();
+        $jellyfinPassword = $jellyController->createUser($user->email, $token);
+
+        // Store the token in database
+        if ($jellyfinPassword) {
+            JelliFinToken::create([
+                'user_id' => $user->id,
+                'token' => $jellyfinPassword, // This is the password for Jellyfin
+            ]);
+        }
 
         return redirect()->route('dashboard');
     }
@@ -53,10 +67,22 @@ class AuthController extends Controller
             ]
         );
 
-        // Ensure user has role 3 without duplicates
-        // $user->roles()->syncWithoutDetaching([3]);
-
         Auth::login($user);
+
+        // Generate token for Jellyfin
+        $token = \Str::random(12);
+
+        // Create Jellyfin user with email + token
+        $jellyController = new JellyController();
+        $jellyfinPassword = $jellyController->createUser($user->email, $token);
+
+        // Store the token in database
+        if ($jellyfinPassword) {
+            JelliFinToken::create([
+                'user_id' => $user->id,
+                'token' => $jellyfinPassword,
+            ]);
+        }
 
         return redirect()->route('dashboard');
     }
@@ -67,19 +93,11 @@ class AuthController extends Controller
             ->stateless()
             ->scopes(['email', 'public_profile'])
             ->redirect();
-        }
+    }
 
     public function handleFacebookCallback()
     {
         $facebookUser = Socialite::driver('facebook')->stateless()->user();
-
-        // See what Facebook actually returns
-        \Log::info('Facebook User Data:', [
-            'id' => $facebookUser->id,
-            'name' => $facebookUser->name,
-            'email' => $facebookUser->email,
-            'avatar' => $facebookUser->avatar,
-        ]);
 
         $user = User::updateOrCreate(
             ['facebook_id' => $facebookUser->id],
@@ -93,6 +111,21 @@ class AuthController extends Controller
         );
 
         Auth::login($user);
+
+        // Generate token for Jellyfin
+        $token = \Str::random(12);
+
+        // Create Jellyfin user with email + token
+        $jellyController = new JellyController();
+        $jellyfinPassword = $jellyController->createUser($user->email, $token);
+
+        // Store the token in database
+        if ($jellyfinPassword) {
+            JelliFinToken::create([
+                'user_id' => $user->id,
+                'token' => $jellyfinPassword,
+            ]);
+        }
 
         return redirect()->route('dashboard');
     }

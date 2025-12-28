@@ -1,0 +1,49 @@
+curl -X POST "http://127.0.0.1:8096/Users/434b77deae0e43878e895c5deeaba218/Policy" \
+  -H "X-Emby-Token: f21b872fe6494c09bd089930d9e2c28c" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "IsAdministrator": false,
+    "IsHidden": false,
+    "IsDisabled": false,
+    "BlockedTags": [],
+    "EnableUserPreferenceAccess": true,
+    "AccessSchedules": [],
+    "BlockUnratedItems": [],
+    "EnableRemoteControlOfOtherUsers": false,
+    "EnableSharedDeviceControl": false,
+    "EnableRemoteAccess": true,
+    "EnableLiveTvManagement": false,
+    "EnableLiveTvAccess": false,
+    "EnableMediaPlayback": true,
+    "EnableAudioPlaybackTranscoding": true,
+    "EnableVideoPlaybackTranscoding": true,
+    "EnableContentDeletion": false,
+    "EnableContentDeletionFromFolders": [],
+    "EnableContentDownloading": true,
+    "EnableSyncTranscoding": false,
+    "EnableMediaConversion": false,
+    "EnabledChannels": [],
+    "EnableAllChannels": false,
+    "EnabledFolders": ["706a0e110d72b768202fbdaffe59df2d"],  
+    "EnableAllFolders": false,
+    "InvalidLoginAttemptCount": 0,
+    "LoginAttemptsBeforeLockout": -1,
+    "MaxActiveSessions": 0,
+    "EnablePublicSharing": false,
+    "BlockedMediaFolders": [],
+    "BlockedChannels": [],
+    "RemoteClientBitrateLimit": 0,
+    "AuthenticationProviderId": "Jellyfin.Server.Implementations.Users.DefaultAuthenticationProvider",
+    "PasswordResetProviderId": "Jellyfin.Server.Implementations.Users.DefaultPasswordResetProvider",
+    "SyncPlayAccess": "CreateAndJoinGroups"
+  }' 
+
+
+http://127.0.0.1:8096/Library/VirtualFolders => to get all the librarys 
+
+http://127.0.0.1:8096/Users/New => to create a user  {
+  "Name": "test",
+  "Password": "test"
+} 
+
+http://127.0.0.1:8096/Users/434b77deae0e43878e895c5deeaba218/Policy=> to update the user

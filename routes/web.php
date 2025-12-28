@@ -7,9 +7,12 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\authController as ControllersAuthController;
 use App\Http\Controllers\CommentsController;
 use App\Http\Controllers\CourseController;
+use App\Http\Controllers\CoursesUserController;
 use App\Http\Controllers\MentorController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\DemandeController;
+use App\Http\Controllers\JellyController;
+use App\Http\Controllers\JellyFinController;
 use App\Http\Controllers\PostsController;
 use App\Http\Controllers\RatingController;
 use App\Http\Controllers\StatsController;
@@ -162,3 +165,10 @@ Route::get('/test-shared-folder', function () {
     $files = $nextcloud->listFiles();
     return response()->json($files);
 });
+
+
+// Route::get('/jellyfin', [JellyfinController::class, 'index'])->name('jellyfin.index');
+// Route::get('/jellyfin/{courseId}', [JellyfinController::class, 'show'])->name('jellyfin.show');
+// Route::get('/jellyfin-debug', [JellyfinController::class, 'debug'])->name('jellyfin.debug');
+// Route::get('/jellyfin/video/{videoId}', [JellyfinController::class, 'proxyVideo']); 
+Route::get('/create-jellyfin-user', [JellyController::class, 'createUser']);
