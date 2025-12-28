@@ -31,19 +31,29 @@ class AuthController extends Controller
 
         Auth::login($user);
 
-        // Generate token for Jellyfin
-        $token = \Str::random(12);
+        // Check if Jellyfin token already exists for this user
+        $existingToken = JelliFinToken::where('user_id', $user->id)->first();
 
-        // Create Jellyfin user with email + token
-        $jellyController = new JellyController();
-        $jellyfinPassword = $jellyController->createUser($user->email, $token);
+        if (!$existingToken) {
+            // Generate token for Jellyfin
+            $token = \Str::random(12);
 
-        // Store the token in database
-        if ($jellyfinPassword) {
-            JelliFinToken::create([
-                'user_id' => $user->id,
-                'token' => $jellyfinPassword, // This is the password for Jellyfin
-            ]);
+            // Create Jellyfin user with email + token
+            $jellyController = new JellyController();
+            $jellyfinPassword = $jellyController->createUser($user->email, $token);
+
+            // Store the token in database if creation succeeded
+            if ($jellyfinPassword) {
+                JelliFinToken::create([
+                    'user_id' => $user->id,
+                    'token' => $jellyfinPassword,
+                ]);
+                \Log::info("Jellyfin user created for {$user->email}");
+            } else {
+                \Log::error("Failed to create Jellyfin user for {$user->email}");
+            }
+        } else {
+            \Log::info("Jellyfin token already exists for {$user->email}, skipping creation");
         }
 
         return redirect()->route('dashboard');
@@ -69,19 +79,20 @@ class AuthController extends Controller
 
         Auth::login($user);
 
-        // Generate token for Jellyfin
-        $token = \Str::random(12);
+        // Check if Jellyfin token already exists
+        $existingToken = JelliFinToken::where('user_id', $user->id)->first();
 
-        // Create Jellyfin user with email + token
-        $jellyController = new JellyController();
-        $jellyfinPassword = $jellyController->createUser($user->email, $token);
+        if (!$existingToken) {
+            $token = \Str::random(12);
+            $jellyController = new JellyController();
+            $jellyfinPassword = $jellyController->createUser($user->email, $token);
 
-        // Store the token in database
-        if ($jellyfinPassword) {
-            JelliFinToken::create([
-                'user_id' => $user->id,
-                'token' => $jellyfinPassword,
-            ]);
+            if ($jellyfinPassword) {
+                JelliFinToken::create([
+                    'user_id' => $user->id,
+                    'token' => $jellyfinPassword,
+                ]);
+            }
         }
 
         return redirect()->route('dashboard');
@@ -112,19 +123,20 @@ class AuthController extends Controller
 
         Auth::login($user);
 
-        // Generate token for Jellyfin
-        $token = \Str::random(12);
+        // Check if Jellyfin token already exists
+        $existingToken = JelliFinToken::where('user_id', $user->id)->first();
 
-        // Create Jellyfin user with email + token
-        $jellyController = new JellyController();
-        $jellyfinPassword = $jellyController->createUser($user->email, $token);
+        if (!$existingToken) {
+            $token = \Str::random(12);
+            $jellyController = new JellyController();
+            $jellyfinPassword = $jellyController->createUser($user->email, $token);
 
-        // Store the token in database
-        if ($jellyfinPassword) {
-            JelliFinToken::create([
-                'user_id' => $user->id,
-                'token' => $jellyfinPassword,
-            ]);
+            if ($jellyfinPassword) {
+                JelliFinToken::create([
+                    'user_id' => $user->id,
+                    'token' => $jellyfinPassword,
+                ]);
+            }
         }
 
         return redirect()->route('dashboard');
